@@ -1,0 +1,16 @@
+1. compressed profile pic.
+2. resized and compressed piizeria pic.
+3. inlined css.
+4. removed google fonts.
+5. added media print to print.css
+6. minified print.css
+7. set google-analytics JS as async
+8. minified perfmatters.js
+
+
+to pizza:
+resized and compressed image
+minified js and set it as async
+loaded minified bootstrap
+inlined css
+
