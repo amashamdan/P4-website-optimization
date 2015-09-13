@@ -550,6 +550,8 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     // the propoerty backface-visibility: hidden was added to the class ".mover" in the style section in pizza.html
+    // This propoerty forces the browser to have the sliding pizzas in seperate layers than the rest of the page, so
+    // upon scrolling only the sliding pizzas would be repainted instead of the whole page.
     document.querySelector("#movingPizzas1").appendChild(elem);
   }
   // Instead of calling querySelectorAll for every scroll event, the line was moved from updatePositions()

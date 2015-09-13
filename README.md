@@ -1,73 +1,44 @@
-## Website Performance Optimization portfolio project
+Welcome to my Website Optimization project. 
+===========================================
+To view the project's webpage, please go to the following link:
 
-Your challenge, if you wish to accept it (and we sure hope you will), is to optimize this online portfolio for speed! In particular, optimize the critical rendering path and make this page render as quickly as possible by applying the techniques you've picked up in the [Critical Rendering Path course](https://www.udacity.com/course/ud884).
+http://amashamdan.github.io/P4-website-optimization/
 
-To get started, check out the repository, inspect the code,
+===========================================
+Optimizations made in the project:
 
-### Getting started
+main.js:
+	1. Changed function changePizzaSizes (acheived time to resize is around 0.5 ms) tp remove FSL.
+	2. Added an array "i5" containing all possible results of (i % 5). Inside the updatePositions() function,
+		the value of (i % 5) is replaced by an element from the i5 array with the help of a counter. i5 array
+		has 5 possible values (0 to 4) which avoids calculating (i % 5) repeatedly when the outcome only has
+		5 possible values.
+	3. The querySelectAll(".mover") was moved to the end the file (in "DOMContentLoaded" handler), changed to getElementsByClassName(),
+		and declared as global variable.
+		It was moved to the handler so that it would only be called once instead of calling it at each scroll event.
+		It was changed to getElementsByClassName() because this method is a lot faster than querySelectAll().
+	4. Inside updatePositions() function and inside the for loop. "document.body.scrollTop / 1250" was taken out of the for loop and evaluated only once for each
+		scroll event. The result stored in the variable location. This way we avoid triggering layout repeatedly for each sliding pizza element before
+		triggering style.
+	5. The variable "phase" is calculated from the varialbe location and the element retreived from the array i5.
+	6. the propoerty backface-visibility: hidden was added to the class ".mover" in the style section in pizza.html. This forces the browser to
+		have a seperate layer for the sliding pizzas which avoids repainting the whole screen during scrolling.
+	7. window.pizzaLength = items.length; was introduced inside the sliding pizzas generator function. This variable is used as a condition in the for loop
+		inside the updatePositions() function. Instead of repeatedly calling items.length in the for loop. This variable has the number of sliding piizas
+		and is called instead of items.length.
 
-####Part 1: Optimize PageSpeed Insights score for index.html
-
-Some useful tips to help you get started:
-
-1. Check out the repository
-1. To inspect the site on your phone, you can run a local server
-
-  ```bash
-  $> cd /path/to/your-project-folder
-  $> python -m SimpleHTTPServer 8080
-  ```
-
-1. Open a browser and visit localhost:8080
-1. Download and install [ngrok](https://ngrok.com/) to make your local server accessible remotely.
-
-  ``` bash
-  $> cd /path/to/your-project-folder
-  $> ngrok 8080
-  ```
-
-1. Copy the public URL ngrok gives you and try running it through PageSpeed Insights! Optional: [More on integrating ngrok, Grunt and PageSpeed.](http://www.jamescryer.com/2014/06/12/grunt-pagespeed-and-ngrok-locally-testing/)
-
-Profile, optimize, measure... and then lather, rinse, and repeat. Good luck!
-
-####Part 2: Optimize Frames per Second in pizza.html
-
-To optimize views/pizza.html, you will need to modify views/js/main.js until your frames per second rate is 60 fps or higher. You will find instructive comments in main.js. 
-
-You might find the FPS Counter/HUD Display useful in Chrome developer tools described here: [Chrome Dev Tools tips-and-tricks](https://developer.chrome.com/devtools/docs/tips-and-tricks).
-
-### Optimization Tips and Tricks
-* [Optimizing Performance](https://developers.google.com/web/fundamentals/performance/ "web performance")
-* [Analyzing the Critical Rendering Path](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/analyzing-crp.html "analyzing crp")
-* [Optimizing the Critical Rendering Path](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/optimizing-critical-rendering-path.html "optimize the crp!")
-* [Avoiding Rendering Blocking CSS](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-blocking-css.html "render blocking css")
-* [Optimizing JavaScript](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/adding-interactivity-with-javascript.html "javascript")
-* [Measuring with Navigation Timing](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/measure-crp.html "nav timing api"). We didn't cover the Navigation Timing API in the first two lessons but it's an incredibly useful tool for automated page profiling. I highly recommend reading.
-* <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/eliminate-downloads.html">The fewer the downloads, the better</a>
-* <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/optimize-encoding-and-transfer.html">Reduce the size of text</a>
-* <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/image-optimization.html">Optimize images</a>
-* <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching.html">HTTP caching</a>
-
-### Customization with Bootstrap
-The portfolio was built on Twitter's <a href="http://getbootstrap.com/">Bootstrap</a> framework. All custom styles are in `dist/css/portfolio.css` in the portfolio repo.
-
-* <a href="http://getbootstrap.com/css/">Bootstrap's CSS Classes</a>
-* <a href="http://getbootstrap.com/components/">Bootstrap's Components</a>
-
-### Sample Portfolios
-
-Feeling uninspired by the portfolio? Here's a list of cool portfolios I found after a few minutes of Googling.
-
-* <a href="http://www.reddit.com/r/webdev/comments/280qkr/would_anybody_like_to_post_their_portfolio_site/">A great discussion about portfolios on reddit</a>
-* <a href="http://ianlunn.co.uk/">http://ianlunn.co.uk/</a>
-* <a href="http://www.adhamdannaway.com/portfolio">http://www.adhamdannaway.com/portfolio</a>
-* <a href="http://www.timboelaars.nl/">http://www.timboelaars.nl/</a>
-* <a href="http://futoryan.prosite.com/">http://futoryan.prosite.com/</a>
-* <a href="http://playonpixels.prosite.com/21591/projects">http://playonpixels.prosite.com/21591/projects</a>
-* <a href="http://colintrenter.prosite.com/">http://colintrenter.prosite.com/</a>
-* <a href="http://calebmorris.prosite.com/">http://calebmorris.prosite.com/</a>
-* <a href="http://www.cullywright.com/">http://www.cullywright.com/</a>
-* <a href="http://yourjustlucky.com/">http://yourjustlucky.com/</a>
-* <a href="http://nicoledominguez.com/portfolio/">http://nicoledominguez.com/portfolio/</a>
-* <a href="http://www.roxannecook.com/">http://www.roxannecook.com/</a>
-* <a href="http://www.84colors.com/portfolio.html">http://www.84colors.com/portfolio.html</a>
+index.html, project-2048.html, project-mobile.html, project-webperf.html:
+	1. Removed link to google fonts.
+	2. Added media = "print" to print.css.
+	3. Minified print.css
+	4. Inlined css from style.css.
+	5. Set google-analytics JavaScript as async.
+	6. Minified perfmatters.js
+	7. Compressed profile picutre.
+	8. Resized and Compressed Pizzeria picture.
+	
+pizza.html:
+	1. Inlined css from views/css/style.css
+	2. Minified bootstrap-grid.css.
+	3. Resized and compressed pizzeria image.
+	4. Minified main.js.
