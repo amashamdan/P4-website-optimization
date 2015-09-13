@@ -1,0 +1,25 @@
+index.html, project-2048.html, project-mobile.html, project-webperf.html:
+	1. removed google fonts.
+	2. added media print to print.css
+	3. minified print.css
+	4. inlined css.
+	5. set google-analytics JS as async
+	6. minified perfmatters.js
+	7. compressed profile pic.
+	8. resized and compressed piizeria pic.
+	
+pizza.html:
+	1. inlined css
+	2. loaded minified bootstrap
+	3. resized and compressed pizzeria image
+	4. minified main.js
+
+main.js:
+	1. changed function changePizzaSizes (time to resize is around 0.5 ms)
+	2. adde and i5 array containing possible results of (i % 5)
+	3. The querySelectAll(".mover") was moved to the end the file and declared as global variable.
+	4. document.body.scrollTop / 1250; was taken out of the for loop and evaluated only once for each
+		scroll event. The result stored in the variable location.
+	5. Modified phase calculation inside the for loop.
+	6. the propoerty backface-visibility: hidden was added to the class ".mover" in the style section in pizza.html
+	7. window.pizzaLength = items.length; was introduced inside the sliding pizzas generator function.

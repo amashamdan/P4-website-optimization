@@ -51,14 +51,10 @@ module.exports = function(grunt) {
 
 	cssmin: {
 	  css1:{
-	    src: 'views/css/style.css',
-	    dest: 'views/css/style.min.css'
-	  },
-	  css2:{
 	    src: 'views/css/bootstrap-grid.css',
 	    dest: 'views/css/bootstrap-grid.min.css'
 	  },
-	  css3:{
+	  css2:{
 	    src: 'css/print.css',
 	    dest: 'css/print.min.css'
 	  },

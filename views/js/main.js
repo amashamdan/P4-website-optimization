@@ -422,38 +422,30 @@ var resizePizzas = function(size) {
   changeSliderLabel(size);
 
   // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
-  function determineDx (elem, size) {
-    var oldwidth = elem.offsetWidth;
-    var windowwidth = document.querySelector("#randomPizzas").offsetWidth;
-    var oldsize = oldwidth / windowwidth;
-
-    // TODO: change to 3 sizes? no more xl?
-    // Changes the slider value to a percent width
-    function sizeSwitcher (size) {
-      switch(size) {
-        case "1":
-          return 0.25;
-        case "2":
-          return 0.3333;
-        case "3":
-          return 0.5;
-        default:
-          console.log("bug in sizeSwitcher");
-      }
-    }
-
-    var newsize = sizeSwitcher(size);
-    var dx = (newsize - oldsize) * windowwidth;
-
-    return dx;
-  }
-
   // Iterates through pizza elements on the page and changes their widths
+
+  // This function is modified to eliminate FSL. Inside the for loop layout was triggered for
+  // every pizza element before css which caused a performance bottleneck. Layout was triggered inside the 
+  // for loop because offsetWidth was called multiple times for each element to calculate the new size. 
+  // After modification, the switch case is modified and the call for offsetWidth is removed, this way a 
+  // proper flow of the render pipeline is maintained and style is triggered before layout. 
   function changePizzaSizes(size) {
-    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
-      var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
-      var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+    switch(size) {
+      case "1":
+        newWidth = 25;
+        break;
+      case "2":
+        newWidth = 33.3;
+        break;
+      case "3":
+        newWidth = 50;
+        break;
+      default:
+        console.log("bug in sizeSwitcher");
+    }
+    var randomPizzas = document.querySelectorAll(".randomPizzaContainer");
+    for (var i = 0; i < randomPizzas.length; i++) {
+      randomPizzas[i].style.width = newWidth + "%";
     }
   }
 
@@ -497,17 +489,37 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // The following code for sliding background pizzas was pulled from Ilya's demo found at:
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
+// The counter variable is used to select an item from the array i5. The array i5 contains all 
+// possible results of (i % 5) which was present in the original script.
+var counter = 0;
+var i5 = [0, 1, 2, 3, 4];
 // Moves the sliding background pizzas based on scroll position
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
+  // The querySelectAll(".mover") was moved to the end the file.
 
-  var items = document.querySelectorAll('.mover');
-  for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+  // A varialbe location is declared here which calls scrollTop once for each scroll event instead of
+  // calling it inside the foor loop once for each background pizza element. The value location is then used
+  // as a constant for each scroll event inside the for loop to calculate phase. Before scrollTop was inside the
+  // for loop and for each element it was called which triggered layout before style for each element, which causes
+  // FSL and performance bottleneck.
+  var location = document.body.scrollTop / 1250;
+  // pizzaLength is defined at the end of the file to avoid calling items.length repeatedly.
+    for (var i = 0; i < pizzaLength; i++) {
+    // phase is calcaulated using the constant location and by selecting an element equivalent to (i % 5) from
+    // the array i5. If the counter excceds 4 it is then reset to zero.
+    var phase = Math.sin( location + i5[counter]);
+    counter ++;
+    if (counter > 4) {
+      counter = 0;
+    }
+    // Style is triggered for each element. I replaced this line with translateX, but didn't notice enhancement 
+    // in the performance so i retained the original line.
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
-
+  
+  
   // User Timing API to the rescue again. Seriously, it's worth learning.
   // Super easy to create custom metrics.
   window.performance.mark("mark_end_frame");
@@ -520,12 +532,16 @@ function updatePositions() {
 
 // runs updatePositions on scroll
 window.addEventListener('scroll', updatePositions);
+console.log("GdscscsdcG");
+// Generates the sliding pizzas when the page loads
 
-// Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {
+  console.log("GGGG");
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  // Instead of painting 200 pizzas. 35 pizzas are enough to cover the whole screen. So the number of sliding
+  // pizzas is reduced to 35 which significantly reduces the paint time.
+  for (var i = 0; i < 35; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
@@ -533,7 +549,15 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.width = "73.333px";
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
+    // the propoerty backface-visibility: hidden was added to the class ".mover" in the style section in pizza.html
     document.querySelector("#movingPizzas1").appendChild(elem);
   }
+  // Instead of calling querySelectorAll for every scroll event, the line was moved from updatePositions()
+  // to this function so it would only be called once. querySelectorAll was replaced by getElementsByClassName()
+  // which is a faster way to call DOM elements.
+  window.items = document.getElementsByClassName('mover');
+  // A variable with a value equal to the number of sliding pizzas. It is used in the for statement inside
+  // updatePositions() function to avoid calling items.length repeatedly.
+  window.pizzaLength = items.length;
   updatePositions();
 });

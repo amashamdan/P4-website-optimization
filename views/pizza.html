@@ -1,8 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>  
-  <style>
-    * {
+<style>
+/* removed render blocking css */
+  * {
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       -box-sizing: border-box;
@@ -34,6 +35,7 @@
       position: fixed;
       width: 256px;
       z-index: -1;
+      backface-visibility: hidden;
     }
 
     .randomPizzaContainer {
@@ -47,10 +49,11 @@
       clear:both;
     }
 
-     .container {
+    .container {
       background-color: rgba(240, 60, 60, 0.8);
     }
   </style>
+  <!-- loaded minified bootstrap-grid -->
   <link rel="stylesheet" href="css/bootstrap-grid.min.css">
 </head>
 
@@ -85,7 +88,8 @@
     </div>
     <div id="callToAction" class="row">
       <div class="col-md-4">
-        <img src="images/pizzeria-720.jpg" class="img-responsive"> <!-- Image credit to: http://commons.wikimedia.org/wiki/File:HK_TST_night_%E5%98%89%E8%98%AD%E9%81%93_Granville_Road_restaurant_Paisano's_Pizzeria_pizza_Dec-2013.JPG -->
+        <img src="images/pizzeria-720.jpg" class="img-responsive"> <!-- resized and compressed pizzeria image -->
+        <!-- Image credit to: http://commons.wikimedia.org/wiki/File:HK_TST_night_%E5%98%89%E8%98%AD%E9%81%93_Granville_Road_restaurant_Paisano's_Pizzeria_pizza_Dec-2013.JPG -->
       </div>
       <div class="col-md-8">
         <div class="row">
@@ -186,7 +190,7 @@
     </div>
     <div id="footer" class="col-md-12">Thanks for visiting! &copy; 2014 Udacity</div>
   </div>
-  <script async type="text/javascript" src="js/main.min.js"></script>
+  <script type="text/javascript" src="js/main.min.js"></script>  <!-- loaded minified main.js -->
 </body>
 
 </html>
